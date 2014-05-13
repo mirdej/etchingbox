@@ -24,8 +24,13 @@ volatile uint8_t	did_tick;
 uint16_t			display_value;
 uint8_t				display_buf[3];
 
+uint8_t				ptc1,ptc2;
+uint16_t			temp1,temp2;
+
+
 uint16_t			millis;
 uint8_t				countdown;
+uint8_t				seconds;
 uint8_t				ad_idx;
 
 
@@ -108,13 +113,17 @@ void init (void) {
 
 	// setup analog converter. 
 	ADCSRA 	= (1 << ADEN) | (1 << ADPS2); 		// enable adc, prescaler 16
-
+	ADMUX = (1 << REFS0);
+	
 	ad_idx = 4;
 	ad_set_channel(4);
+	
 	ad_start_conversion();
 
 	wdt_enable(WDTO_30MS);			// enable watchdog timer
 	sei();
+	
+	ptc1 = 255;	ptc2 = 255;
 }
 
 // ------------------------------------------------------------------------------
@@ -153,6 +162,8 @@ void update_display_buffer(void) {
 	for (i = 0; i < 3; i++) {
 			display_buf[i] = num_to_7seg(get_digit(i,display_value));
 	}
+	// dont display leading zero if we're not counting down
+	if (!countdown) {display_buf[2] = 0;}
 	
 }
 
@@ -184,15 +195,53 @@ void check_ad(void) {
 	uint16_t temp;
 	temp = ad_Read10bit();
 	
+	
+	switch (ad_idx) {
+
+		case 4:
+			temp /= 4;
+			ptc1 = temp;
+			break;
+			
+		case 5:
+			temp /= 4;
+			ptc2 = temp;
+			break;
+	
+		case 6:
+			temp = (temp * 45) / 100 - 44;
+			if (temp1) temp = ((3 * temp1) + temp) / 4;			//don't lowpass filter values if nothing measured yet
+			temp1 = temp;
+			break;
+
+		case 7:
+			temp = (temp * 45) / 100 - 44;
+			if (temp2) temp = ((3 * temp2) + temp) / 4;
+			temp2 = temp;
+			break;
+	}
+	
+	
 	ad_idx++;
 	if (ad_idx > 7) ad_idx = 4;
-	
-	ad_set_channel(ad_idx);
+	ad_set_channel (ad_idx);
 	ad_start_conversion();
 	
 				
 }
 
+// ------------------------------------------------------------------------------
+// heater control
+
+void heater_on(uint8_t n) {
+	if (n == 1) PORTB |= (1 << 2);
+	if (n == 2) PORTB |= (1 << 0);
+}
+
+void heater_off(uint8_t n) {
+	if (n == 1) PORTB &= ~(1 << 2);
+	if (n == 2) PORTB &= ~(1 << 0);	
+}
 
 
 // ------------------------------------------------------------------------------
@@ -215,22 +264,42 @@ int main (void) {
 
 	init();
 	update_display_buffer();
-	
 
 	while(1) {
 		wdt_reset();
-		//check_ad();
+		check_ad();
+
+		// check heating status
+		if (temp1 < 46) heater_on(1);
+		if (temp2 < 20) heater_on(2);
+
+		if (temp1 > 48) heater_off(1);
+		if (temp2 > 24) heater_off(2);
+		
+		// safety off if there's no liquid 
+		if (ptc1 < 70) {heater_off(1);}
+		if (ptc2 < 70) {heater_off(2);}
 		
 		if (did_tick) {			// happens every millisecond
 			did_tick = 0;
 			millis++;
+			
+
 			if (millis >= 999) {
 				millis = 0;
-				if (countdown == 0) countdown = 180;
-				else countdown--;
-				display_value = countdown;
-				update_display_buffer();
+				if (countdown) {
+					countdown--;
+					display_value = countdown;
+				} else {
+					seconds++;
+					if (seconds < 4) display_value = temp1;
+					else if (seconds < 8) display_value = temp2;
+					else seconds = 0;
+				}		
 			}
+						
+			update_display_buffer();
+
 		}
 
 	}
