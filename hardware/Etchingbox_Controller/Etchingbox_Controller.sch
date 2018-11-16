@@ -98,17 +98,6 @@ Wire Wire Line
 Wire Wire Line
 	4450 3200 4000 3200
 $Comp
-L Transistor_FET:QM6015D Q2
-U 1 1 5BE80D40
-P 5150 3200
-F 0 "Q2" H 5356 3246 50  0000 L CNN
-F 1 "IRFR120NTRPBF" H 5356 3155 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:TO-252-2" H 5350 3125 50  0001 L CIN
-F 3 "http://www.jaolen.com/images/pdf/QM6015D.pdf" V 5150 3200 50  0001 L CNN
-	1    5150 3200
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR017
 U 1 1 5BE80D47
 P 4450 3500
@@ -182,17 +171,6 @@ Wire Wire Line
 Wire Wire Line
 	4450 4600 4000 4600
 $Comp
-L Transistor_FET:QM6015D Q3
-U 1 1 5BE83322
-P 5150 4600
-F 0 "Q3" H 5356 4646 50  0000 L CNN
-F 1 "IRFR120NTRPBF" H 5356 4555 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:TO-252-2" H 5350 4525 50  0001 L CIN
-F 3 "http://www.jaolen.com/images/pdf/QM6015D.pdf" V 5150 4600 50  0001 L CNN
-	1    5150 4600
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR018
 U 1 1 5BE83329
 P 4450 4900
@@ -251,7 +229,6 @@ F 3 "~" H 5500 4250 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5250 4400 5500 4400
-Connection ~ 5250 4400
 $Comp
 L power:+12V #PWR029
 U 1 1 5BE8334E
@@ -292,17 +269,6 @@ Wire Wire Line
 	4650 6100 4450 6100
 Wire Wire Line
 	4450 6100 4000 6100
-$Comp
-L Transistor_FET:QM6015D Q4
-U 1 1 5BE83366
-P 5150 6100
-F 0 "Q4" H 5356 6146 50  0000 L CNN
-F 1 "IRFR120NTRPBF" H 5356 6055 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:TO-252-2" H 5350 6025 50  0001 L CIN
-F 3 "http://www.jaolen.com/images/pdf/QM6015D.pdf" V 5150 6100 50  0001 L CNN
-	1    5150 6100
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:GND #PWR019
 U 1 1 5BE8336D
@@ -746,7 +712,6 @@ Wire Wire Line
 Connection ~ 5250 5800
 Wire Wire Line
 	5250 5900 5750 5900
-Connection ~ 5250 5900
 $Comp
 L Connector:Conn_01x03_Male Temperature2
 U 1 1 5BF02AE6
@@ -1269,4 +1234,39 @@ F 3 "https://www.fujitsu.com/downloads/MICRO/fcai/relays/lz.pdf" H 7650 2750 50 
 $EndComp
 Connection ~ 7450 3050
 Connection ~ 7450 2450
+$Comp
+L Anyma_Library:IRLML2502PBF Q2
+U 1 1 5BF0173C
+P 5150 3200
+F 0 "Q2" H 5356 3246 50  0000 L CNN
+F 1 "IRLML2502PBF" H 5356 3155 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5350 3125 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/irlml2502.pdf?fileId=5546d462533600a401535667f44d2602" H 5150 3200 50  0001 L CNN
+	1    5150 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Anyma_Library:IRLML2502PBF Q3
+U 1 1 5BF02C9A
+P 5150 4600
+F 0 "Q3" H 5356 4646 50  0000 L CNN
+F 1 "IRLML2502PBF" H 5356 4555 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5350 4525 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/irlml2502.pdf?fileId=5546d462533600a401535667f44d2602" H 5150 4600 50  0001 L CNN
+	1    5150 4600
+	1    0    0    -1  
+$EndComp
+Connection ~ 5250 4400
+$Comp
+L Anyma_Library:IRLML2502PBF Q4
+U 1 1 5BF02F54
+P 5150 6100
+F 0 "Q4" H 5356 6146 50  0000 L CNN
+F 1 "IRLML2502PBF" H 5356 6055 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5350 6025 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/irlml2502.pdf?fileId=5546d462533600a401535667f44d2602" H 5150 6100 50  0001 L CNN
+	1    5150 6100
+	1    0    0    -1  
+$EndComp
+Connection ~ 5250 5900
 $EndSCHEMATC

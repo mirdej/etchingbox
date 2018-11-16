@@ -65,21 +65,43 @@ void test_pulse_pin(byte pin){
 	digitalWrite(pin,		LOW);
 	delay(500);
 }
+
+void next_line(char height) {
+	static char y;
+	if (height == 0) y = 0;
+	else {
+		y+= height;
+		u8g2.setCursor(0,y);  	
+	}
+}
 //----------------------------------------------------------------------------------------------------
 void hardware_test() {
 	int i;
-   	tone(PIN_PIEZO,800,100);
+	delay(1000);
+ 	u8g2.clearBuffer();
+ 	next_line(0);
+ 	next_line(10);
+	u8g2.setFont(u8g2_font_6x12_tr);
+	u8g2.print("Hardware Check:");
+	u8g2.sendBuffer();
+	tone(PIN_PIEZO,800,100);
 	delay(500);
 	
+ 	next_line(16);
+	u8g2.print("Main Heater Relay");
+	u8g2.sendBuffer();
 	test_pulse_pin(PIN_RELAIS_HEAT);
+	
+ 	next_line(9);
+	u8g2.print("Secondary Heater Relay");
+	u8g2.sendBuffer();
 	test_pulse_pin(PIN_RELAIS_HEAT_2);
-	test_pulse_pin(PIN_UV);			
-	test_pulse_pin(PIN_LIGHT);			
-	test_pulse_pin(PIN_BUBBLES);			
-   	tone(PIN_PIEZO,880,100);
    	
-   	delay(200);
-   	/*
+   	delay(500);
+ 	next_line(9);
+	u8g2.print("Lightpad");
+	u8g2.sendBuffer();
+
 	for(i = 0; i < 255; i++) {
 		analogWrite(PIN_LIGHT,i);
 		delay(1);
@@ -88,6 +110,11 @@ void hardware_test() {
 		analogWrite(PIN_LIGHT,i);
 		delay(1);
 	}
+	
+   	delay(500);
+ 	next_line(9);
+	u8g2.print("UV Light");
+	u8g2.sendBuffer();
 	for(i = 0; i < 255; i++) {
 		analogWrite(PIN_UV,i);
 		delay(1);
@@ -96,6 +123,11 @@ void hardware_test() {
 		analogWrite(PIN_UV,i);
 		delay(1);
 	}
+	
+   	delay(500);
+ 	next_line(9);
+	u8g2.print("Bubbles");
+	u8g2.sendBuffer();
 	for(i = 0; i < 255; i++) {
 		analogWrite(PIN_BUBBLES,i);
 		delay(1);
@@ -104,7 +136,8 @@ void hardware_test() {
 		analogWrite(PIN_BUBBLES,i);
 		delay(1);
 	}
-	*/
+	delay(500);
+   	tone(PIN_PIEZO,880,100);
 }
 
 void all_on() {
@@ -136,7 +169,7 @@ void intro() {
 //																				loop
 
 void loop() {
-	all_on();//hardware_test();
+	hardware_test();
 	delay(1000);
 }
 
