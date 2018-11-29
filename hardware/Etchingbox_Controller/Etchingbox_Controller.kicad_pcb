@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 17)
+    (drawings 18)
     (tracks 321)
     (zones 0)
     (modules 52)
@@ -2664,6 +2664,9 @@
     (pad 1 np_thru_hole circle (at 0 0) (size 3.2 3.2) (drill 3.2) (layers *.Cu *.Mask))
   )
 
+  (gr_text "NOT READY FOR PRODUCTION\nSOME PARTS ARE TOO CLOSE" (at 158.115 34.925) (layer F.Cu)
+    (effects (font (size 3 3) (thickness 0.3)))
+  )
   (gr_line (start 57.785 17.145) (end 57.785 117.475) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 120.015 17.145) (end 57.785 17.145) (layer Edge.Cuts) (width 0.15))
   (gr_line (start 120.015 117.475) (end 120.015 17.145) (layer Edge.Cuts) (width 0.15))
