@@ -19,6 +19,7 @@
 #include <DallasTemperature.h>
 
 #include "Settings.h" 
+#include "Logo.h" 
 
 
 
@@ -310,13 +311,10 @@ void intro() {
 	u8g2.clearBuffer();
 	u8g2.setCursor(8,16);
 	u8g2.setFont(u8g2_font_logisoso16_tr);
-	u8g2.print("Welcome");
-	u8g2.setFont(u8g2_font_logisoso22_tr);
-	u8g2.setCursor(60,48);
-	u8g2.print("ATZ");
-	u8g2.setCursor(60,63);
-	u8g2.print("BOX");
-   	u8g2.sendBuffer();
+	u8g2.drawBitmap(0, 0, 16, 64,bitmap_logo);
+
+u8g2.sendBuffer();
+delay (2000);
 }
 
 
