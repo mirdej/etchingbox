@@ -308,6 +308,14 @@ void all_on() {
 //----------------------------------------------------------------------------------------
 //																	Nice and warm Welcome
 void intro() {
+	   u8g2.setCursor(0,12);
+    u8g2.setFont(u8g2_font_crox2cb_tf);
+    u8g2.print("[ a n y m a ]");
+    u8g2.drawXBM( 42, 24, u8g_logo_width, u8g_logo_height, u8g_logo_bits);
+    u8g2.sendBuffer();
+  delay(2000);
+
+
 	u8g2.clearBuffer();
 	u8g2.setCursor(8,16);
 	u8g2.setFont(u8g2_font_logisoso16_tr);
