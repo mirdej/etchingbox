@@ -25,9 +25,9 @@
 //																				Exposure
 //
 // UV_TIME	sets UV exposure time in seconds. Default is 90 
-#define UV_TIME				90
+#define UV_TIME				10
 #define UV_POWER			200
-#define LIGHTPAD_POWER		255
+#define LIGHTPAD_POWER		50
 
 //----------------------------------------------------------------------------------------
 //																				Acid Bath
@@ -38,6 +38,7 @@
 #define ACID_MINIMUM_TEMPERATURE		42
 #define ACID_MAXIMUM_TEMPERATURE		48
 #define ACID_TEMPERATURE_SENSOR_ADDRESS	{0x28, 0x78, 0x87, 0x45, 0x92, 0x18, 0x02, 0x9D}
+//#define ACID_TEMPERATURE_SENSOR_ADDRESS  {0x28, 0xFA, 0xD6, 0x45, 0x92, 0x11, 0x02, 0xF3}
 
 // This sets the PWM of the bubble pump: 0 = No Airflow, 255 Maximum Airflow
 // Idle Speed is when machine starts up, or no user input for BUBBLE_IDLE_TIMEOUT (in minutes)
@@ -58,16 +59,20 @@
 #define WATER_BATH_MAXIMUM_TEMPERATURE		30
 #define WATER_BATH_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xDD, 0x62, 0x45, 0x92, 0x02, 0x02, 0x29}
 
+// the single one for prototyping
+//#define WATER_BATH_TEMPERATURE_SENSOR_ADDRESS   {0x28, 0xFA, 0xD6, 0x45, 0x92, 0x11, 0x02, 0xF3}
+
+
 
 //----------------------------------------------------------------------------------------
 //																				Ambient temperature
-#define AMBIENT_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xAB, 0xE7, 0x45, 0x92, 0x11, 0x02, 0xA3}
+#define AMBIENT_TEMPERATURE_SENSOR_ADDRESS	{0x28, 0xFA, 0xD6, 0x45, 0x92, 0x11, 0x02, 0xF3}
+
 
 //----------------------------------------------------------------------------------------
 //																				Logging
 //
 // Perform different hardware checks at startup? Set first one to true to disable all checks
 #define DISABLE_HARDWARE_CHECK			true
-
 #define HARDWARE_CHECK_RELAY			true
 #define HARDWARE_CHECK_TEMPERATURE		true 

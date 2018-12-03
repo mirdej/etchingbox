@@ -43,7 +43,7 @@
 OneWire 						oneWire(PIN_ONE_WIRE_BUS);
 DallasTemperature 				temperature_sensors(&oneWire);
 DeviceAddress 					acid_temperature_sensor_address = ACID_TEMPERATURE_SENSOR_ADDRESS;
-DeviceAddress					ambient_temperature_sensor_address;
+DeviceAddress					ambient_temperature_sensor_address = AMBIENT_TEMPERATURE_SENSOR_ADDRESS;
 DeviceAddress					water_bath_temperature_sensor_address = WATER_BATH_TEMPERATURE_SENSOR_ADDRESS;
 
 
@@ -446,27 +446,41 @@ void check_button() {
 //----------------------------------------------------------------------------------------
 //																				temperature
 void check_temperatures() {	
-  	temperature_sensors.requestTemperatures();
+  temperature_sensors.requestTemperatures();
 	water_bath_temperature 	= temperature_sensors.getTempC(water_bath_temperature_sensor_address);
-	acid_temperature		= temperature_sensors.getTempC(acid_temperature_sensor_address);
-	ambient_temperature		= temperature_sensors.getTempC(ambient_temperature_sensor_address);
-	
+	acid_temperature = temperature_sensors.getTempC(acid_temperature_sensor_address);
+	ambient_temperature	= temperature_sensors.getTempC(ambient_temperature_sensor_address);
+
+  if (ambient_temperature > -50.) {
+  Serial.print("Ambi:  ");
+  Serial.println(ambient_temperature);
+  } else {
+    Serial.print("Ambi:  ");
+    Serial.println("Off");
+  }
+  
 	if (acid_temperature > -50.) {
+    Serial.print("Acid:  ");
 		Serial.println(acid_temperature);
 		if (acid_temperature < ACID_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,HIGH);
 		if (acid_temperature > ACID_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,LOW);
 	} else {
 		// Problem With Sensor ? Nothing connected? Wrong address ?
 		digitalWrite(PIN_RELAY_HEAT,LOW);
+    Serial.print("Acid:  ");
+    Serial.println("Off");
 	}
 
 	if (water_bath_temperature > -50.) {
+    Serial.print("Water: ");
 		Serial.println(water_bath_temperature);
 		if (water_bath_temperature < WATER_BATH_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,HIGH);
 		if (water_bath_temperature > WATER_BATH_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,LOW);
 	} else {
 		// Problem With Sensor ? Nothing connected? Wrong address ?
 		digitalWrite(PIN_RELAY_HEAT_2,LOW);
+    Serial.print("Water:  ");
+    Serial.println("Off");
 	}
 }
 
