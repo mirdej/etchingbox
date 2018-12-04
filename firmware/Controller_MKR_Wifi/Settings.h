@@ -43,7 +43,7 @@
 // Idle Speed is when machine starts up, or no user input for BUBBLE_IDLE_TIMEOUT (in minutes)
 // You should not set this to 0 in order to always keep water flowing around the heater
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
-#define BUBBLE_SPEED_IDLE					76
+#define BUBBLE_SPEED_IDLE					0
 #define BUBBLE_SPEED_NORMAL					140
 #define BUBBLE_IDLE_TIMEOUT					20
 
