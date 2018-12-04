@@ -43,7 +43,7 @@
 OneWire 						oneWire(PIN_ONE_WIRE_BUS);
 DallasTemperature 				temperature_sensors(&oneWire);
 DeviceAddress 					acid_temperature_sensor_address = ACID_TEMPERATURE_SENSOR_ADDRESS;
-DeviceAddress					ambient_temperature_sensor_address;
+DeviceAddress					ambient_temperature_sensor_address= AMBIENT_TEMPERATURE_SENSOR_ADDRESS;
 DeviceAddress					water_bath_temperature_sensor_address = WATER_BATH_TEMPERATURE_SENSOR_ADDRESS;
 
 
@@ -308,21 +308,17 @@ void all_on() {
 //----------------------------------------------------------------------------------------
 //																	Nice and warm Welcome
 void intro() {
-	   u8g2.setCursor(0,12);
-    u8g2.setFont(u8g2_font_crox2cb_tf);
-    u8g2.print("[ a n y m a ]");
-    u8g2.drawXBM( 42, 24, u8g_logo_width, u8g_logo_height, u8g_logo_bits);
-    u8g2.sendBuffer();
-  delay(2000);
-
 
 	u8g2.clearBuffer();
-	u8g2.setCursor(8,16);
-	u8g2.setFont(u8g2_font_logisoso16_tr);
-	u8g2.drawBitmap(0, 0, 16, 64,bitmap_logo);
+	u8g2.drawBitmap(0, 0, 16, 16,bitmap_anyma);
+	u8g2.drawBitmap(32, 16, 8, 48,bitmap_osh);
+	u8g2.sendBuffer();
+ 	delay(2000);
 
-u8g2.sendBuffer();
-delay (2000);
+	u8g2.drawBitmap(32, 16, 8, 48,bitmap_box);
+
+	u8g2.sendBuffer();
+	delay (2000);
 }
 
 
@@ -505,6 +501,8 @@ void stop_flash() {
 //																				mm:ss
 void print_time(long time) {
 		time /= 1000;
+		if (time/60 < 10)		u8g2.print("0");
+
 		u8g2.print(time/60);
 
 		u8g2.print(":");
@@ -515,52 +513,32 @@ void print_time(long time) {
 	}
 //----------------------------------------------------------------------------------------
 //																				display
-void update_display() {	
+//----------------------------------------------------------------------------------------
+//																				display
+void update_display() { 
 	unsigned long time;
 	time = millis() - last_user_input;
 
 	u8g2.clearBuffer();
-	u8g2.setFont(u8g2_font_6x12_tr);
-	next_line(0);
-	next_line(16);
-	u8g2.print("Aeztbox          ");
-	print_time(time);
-		
-	next_line(12);
-	u8g2.print("Acid       : ");
-	
-	if (acid_temperature > -100.) {
-		u8g2.print(acid_temperature);
-		if (digitalRead(PIN_RELAY_HEAT)) {
-			u8g2.print("  H");
-		}
-	} else {
-		u8g2.print("Offline");
-	}
-
-	next_line(12);
-	u8g2.print("Water Bath : ");
-	
-	if (water_bath_temperature > -100.) {
-		u8g2.print(water_bath_temperature);
-		if (digitalRead(PIN_RELAY_HEAT_2)) {
-			u8g2.print("  H");
-		}
-	} else {
-		u8g2.print("Offline");
-	}
-	
-	next_line(12);
-	u8g2.print("Ambient    : ");
-	
-	if (ambient_temperature > -100.) {
-		u8g2.print(ambient_temperature);
-	} else {
-		u8g2.print("Offline");
-	}	
-	
-	next_line(12);
+ 
+	u8g2.setFont(u8g2_font_fub14_tf);
 	if (uv_state) {
+		u8g2.setCursor(5, 14);
+		u8g2.print("!! UV ON !!");
+	}
+	else {
+		u8g2.setCursor(1, 14);
+		u8g2.print(ambient_temperature, 0);
+		u8g2.print("\xb0");
+		u8g2.setCursor(70, 14);
+		print_time(time);
+	}
+	//u8g2.setFont(u8g2_font_6x12_tr);
+
+	if (uv_state) {
+		u8g2.setFont(u8g2_font_logisoso30_tf);
+		u8g2.setCursor(24, 58);
+		u8g2.drawFrame(18,22,96,42);
 		time = uv_stop_time - millis();
 	
 		if (time < 500) {
@@ -570,7 +548,40 @@ void update_display() {
 		print_time(time);
 	}
 	
-   	u8g2.sendBuffer();
+	else {
+	u8g2.drawFrame(0,16,103,48);
+	u8g2.drawFrame(102,16,26,48);
+	u8g2.setCursor(3, 38);
+	u8g2.setFont(u8g2_font_fub14_tf);
+	//u8g2.setFont(u8g2_font_helvB12_tf);
+	u8g2.print("Acid   : ");
+	u8g2.drawCircle(115, 30, 7, U8G2_DRAW_ALL);
+	if (acid_temperature > -100.) {
+		u8g2.print(acid_temperature, 0);
+		
+		if (digitalRead(PIN_RELAY_HEAT)) {
+			u8g2.drawDisc(115, 30, 5, U8G2_DRAW_ALL);
+			//u8g2.print("	H");
+		}
+	} else {
+		u8g2.print("--");
+	}
+
+	u8g2.setCursor(3, 60);
+	u8g2.print("Water: ");
+	u8g2.drawCircle(115, 52, 7, U8G2_DRAW_ALL);
+	if (water_bath_temperature > -100.) {
+		u8g2.print(water_bath_temperature, 0);
+		
+		if (digitalRead(PIN_RELAY_HEAT_2)) {
+			u8g2.drawDisc(115, 52, 5, U8G2_DRAW_ALL);
+			//u8g2.print("	H");
+		}
+	} else {
+		u8g2.print("--");
+	}
+	}
+		u8g2.sendBuffer();
 }
 
 

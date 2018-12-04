@@ -25,9 +25,9 @@
 //																				Exposure
 //
 // UV_TIME	sets UV exposure time in seconds. Default is 90 
-#define UV_TIME				10
-#define UV_POWER			200
-#define LIGHTPAD_POWER		127
+#define UV_TIME				90
+#define UV_POWER			255
+#define LIGHTPAD_POWER		200
 
 //----------------------------------------------------------------------------------------
 //																				Acid Bath
@@ -35,7 +35,7 @@
 // Recommended settings for acid bath are 42 and 48 degrees.
 // Dallas temperature sensors all have a unique device address.
 // Copy the address for your sensor from the Arduino serial monitor and paste below
-#define ACID_MINIMUM_TEMPERATURE		42
+#define ACID_MINIMUM_TEMPERATURE		45
 #define ACID_MAXIMUM_TEMPERATURE		48
 #define ACID_TEMPERATURE_SENSOR_ADDRESS	{0x28, 0x6C, 0xD7, 0x45, 0x92, 0x11, 0x02, 0x3D}
 
@@ -45,7 +45,7 @@
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
 #define BUBBLE_SPEED_IDLE					76
 #define BUBBLE_SPEED_NORMAL					140
-#define BUBBLE_IDLE_TIMEOUT					1
+#define BUBBLE_IDLE_TIMEOUT					20
 
 //----------------------------------------------------------------------------------------
 //																				Water Bath
@@ -54,14 +54,14 @@
 // temperatures here in degrees celsius. Recommended settings are 22 and 26 degrees.
 // Dallas temperature sensors all have a unique device address.
 // Copy the address for your sensor from the Arduino serial monitor and paste below
-#define WATER_BATH_MINIMUM_TEMPERATURE		25
-#define WATER_BATH_MAXIMUM_TEMPERATURE		28
+#define WATER_BATH_MINIMUM_TEMPERATURE		28
+#define WATER_BATH_MAXIMUM_TEMPERATURE		32
 #define WATER_BATH_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xAB, 0xE7, 0x45, 0x92, 0x11, 0x02, 0xA3}
 
 
 //----------------------------------------------------------------------------------------
 //																				Ambient temperature
-#define AMBIENT_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xAB, 0xE7, 0x45, 0x92, 0x11, 0x02, 0xA3}
+#define AMBIENT_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xD5, 0xB2, 0x45, 0x92, 0x03, 0x02, 0x12}
 
 //----------------------------------------------------------------------------------------
 //																				Logging
