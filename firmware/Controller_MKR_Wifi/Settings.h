@@ -25,7 +25,7 @@
 //																				Exposure
 //
 // UV_TIME	sets UV exposure time in seconds. Default is 90 
-#define UV_TIME				90
+#define UV_TIME				120
 #define UV_POWER			255
 #define LIGHTPAD_POWER		200
 
@@ -43,7 +43,7 @@
 // Idle Speed is when machine starts up, or no user input for BUBBLE_IDLE_TIMEOUT (in minutes)
 // You should not set this to 0 in order to always keep water flowing around the heater
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
-#define BUBBLE_SPEED_IDLE					0
+#define BUBBLE_SPEED_IDLE					80
 #define BUBBLE_SPEED_NORMAL					140
 #define BUBBLE_IDLE_TIMEOUT					20
 

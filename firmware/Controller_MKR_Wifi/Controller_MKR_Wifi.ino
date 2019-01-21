@@ -486,6 +486,8 @@ void check_ramps() {
 void stop_flash() {
 	uv_state = 0;
 	uv_target_power = 0;
+	uv_power = 0;						// full stop. do not ramp down
+	analogWrite(PIN_UV, uv_power);
 	tone(PIN_PIEZO,690,100);				
 	delay(200);
 	tone(PIN_PIEZO,690,100);
