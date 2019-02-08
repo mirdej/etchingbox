@@ -10,7 +10,6 @@
 //
 //----------------------------------------------------------------------------------------
 
-
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <U8g2lib.h>
@@ -51,8 +50,9 @@ float 							water_bath_temperature,
 								acid_temperature,
 								ambient_temperature;
 
-char							lighpad_power, uv_power, bubble_power;
+char							lighpad_power, uv_power;
 char							lighpad_target_power, uv_target_power;
+int 							bubble_power;
 
 
 long 							last_user_input;		// millis() timestamp of last time button clicked
@@ -71,7 +71,10 @@ int wifi_sftatus = WL_IDLE_STATUS;
 
 char 										uv_state = 0;
 long 										uv_stop_time;
-	
+
+
+long  cnt;
+
 //========================================================================================
 //----------------------------------------------------------------------------------------
 //																				SETUP
@@ -88,7 +91,9 @@ void setup() {
 
 	Serial.begin(9600);			
 	sound_standby();
-		
+
+	setup_timer();
+
 	// init OLED display
 	u8g2.begin();
 	u8g2.setPowerSave(0); 
@@ -96,12 +101,17 @@ void setup() {
 
 	// init dallas temperature sensors
 	temperature_sensors.begin();
+ 	temperature_sensors.setWaitForConversion(true);
+  	temperature_sensors.setResolution(acid_temperature_sensor_address, 8);
+  	temperature_sensors.setResolution(ambient_temperature_sensor_address, 8);
+  	temperature_sensors.setResolution(water_bath_temperature_sensor_address, 8);
+    temperature_sensors.requestTemperatures(); 
 
 	// set up timed functions called by t.update() repeatedly in loop
 
 	t.every(10, 	check_button);
 	t.every(2500, 	check_temperatures);
-	t.every(30000, 	check_bubbles);
+	t.every(1000, 	check_bubbles);
 	t.every(10, 	check_ramps);
 	t.every(50, 	update_display);
 	t.every(10000, 	safety_check);
@@ -116,10 +126,11 @@ void setup() {
 	
 	lighpad_target_power 	= LIGHTPAD_POWER;
 	uv_target_power			= 0;
-	bubble_power		= BUBBLE_SPEED_IDLE;
+	bubble_power			= BUBBLE_SPEED_IDLE;
 	
 	last_user_input = millis();
 	check_temperatures();			// do this once to be sure to get data
+	
 	
 	if (LOG_TEMPERATURES) {
 		Serial.println("------");
@@ -333,7 +344,7 @@ void all_on() {
 	digitalWrite(PIN_RELAY_HEAT_2, 		HIGH);			
 	analogWrite(PIN_UV, 				255);			
 	analogWrite(PIN_LIGHT, 				255);			
-	analogWrite(PIN_BUBBLES,	 		255);			
+	bubble_power = 255;
 
 }
 
@@ -343,7 +354,8 @@ void all_off() {
 	digitalWrite(PIN_RELAY_HEAT_2, 		LOW);			
 	analogWrite(PIN_UV, 				0);			
 	analogWrite(PIN_LIGHT, 				0);			
-	analogWrite(PIN_BUBBLES,	 		0);			
+	bubble_power = 0;
+
 
 }
 //----------------------------------------------------------------------------------------
@@ -425,11 +437,10 @@ void error (const char* err) {
 void safety_check() {
 	long time_since_last_click = millis() - last_user_input;
 	if (time_since_last_click > STANDBY_TIME * 60000) {
-		bubble_power = 0;
 		sound_standby();
 		u8g2.clearBuffer();
-		u8g2.setCursor(8,16);
-		u8g2.setFont(u8g2_font_logisoso16_tr);
+		u8g2.setCursor(8,14);
+		u8g2.setFont(u8g2_font_fub14_tf);
 		u8g2.print("Standby");
 		u8g2.sendBuffer();
 		
@@ -506,25 +517,34 @@ void check_button() {
 //----------------------------------------------------------------------------------------
 //																				temperature
 void check_temperatures() {	
-  	temperature_sensors.requestTemperatures();
-	water_bath_temperature 	= temperature_sensors.getTempC(water_bath_temperature_sensor_address);
-	acid_temperature		= temperature_sensors.getTempC(acid_temperature_sensor_address);
-	ambient_temperature		= temperature_sensors.getTempC(ambient_temperature_sensor_address);
+  	static char did_request;
+  	
+  	if (!did_request) {
+  		temperature_sensors.requestTemperatures();
+  		did_request = 1;
+  		
+  	} else {
+  	  	did_request = 0;
+  	  	
+		water_bath_temperature 	= temperature_sensors.getTempC(water_bath_temperature_sensor_address);
+		acid_temperature		= temperature_sensors.getTempC(acid_temperature_sensor_address);
+		ambient_temperature		= temperature_sensors.getTempC(ambient_temperature_sensor_address);
 	
-	if (acid_temperature > -50.) {
-		if (acid_temperature < ACID_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,HIGH);
-		if (acid_temperature > ACID_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,LOW);
-	} else {
-		// Problem With Sensor ? Nothing connected? Wrong address ?
-		digitalWrite(PIN_RELAY_HEAT,LOW);
-	}
+		if (acid_temperature > -50.) {
+			if (acid_temperature < ACID_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,HIGH);
+			if (acid_temperature > ACID_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,LOW);
+		} else {
+			// Problem With Sensor ? Nothing connected? Wrong address ?
+			digitalWrite(PIN_RELAY_HEAT,LOW);
+		}
 
-	if (water_bath_temperature > -50.) {
-		if (water_bath_temperature < WATER_BATH_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,HIGH);
-		if (water_bath_temperature > WATER_BATH_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,LOW);
-	} else {
-		// Problem With Sensor ? Nothing connected? Wrong address ?
-		digitalWrite(PIN_RELAY_HEAT_2,LOW);
+		if (water_bath_temperature > -50.) {
+			if (water_bath_temperature < WATER_BATH_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,HIGH);
+			if (water_bath_temperature > WATER_BATH_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,LOW);
+		} else {
+			// Problem With Sensor ? Nothing connected? Wrong address ?
+			digitalWrite(PIN_RELAY_HEAT_2,LOW);
+		}
 	}
 }
 
@@ -540,16 +560,8 @@ void check_bubbles() {
 	} else {
 		sound_played = 0;
 	}
-	
-	if (bubble_power == BUBBLE_SPEED_IDLE) {
-		analogWrite(PIN_BUBBLES, 255);
-			delay(200);
-		analogWrite(PIN_BUBBLES, 0);
-	} else {
-		analogWrite(PIN_BUBBLES, bubble_power);
-	}
-
 }
+
 
 //----------------------------------------------------------------------------------------
 //																				ramp analog outs
@@ -640,7 +652,7 @@ void update_display() {
 	time = millis() - last_user_input;
 
 	u8g2.clearBuffer();
- 
+
 	u8g2.setFont(u8g2_font_fub14_tf);
 	if (uv_state) {
 		u8g2.setCursor(5, 14);
@@ -701,9 +713,11 @@ void update_display() {
 	} else {
 		u8g2.print("--");
 	}
-	}
-		u8g2.sendBuffer();
+	} 
+	u8g2.sendBuffer();
 }
+
+
 
 
 
@@ -715,3 +729,67 @@ void loop() {
 	t.update();
 }
 
+
+
+
+
+//----------------------------------------------------------------------------------------
+//																				Slow PWM on SAMD Timer 4$
+//																				to prevent whining of air pump
+
+void setup_timer() {
+   // Set up the generic clock (GCLK4) used to clock timers
+  REG_GCLK_GENDIV = GCLK_GENDIV_DIV(3) |          // Divide the 48MHz clock source by divisor 3: 48MHz/3=16MHz
+                    GCLK_GENDIV_ID(4);            // Select Generic Clock (GCLK) 4
+  while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
+
+  REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC |           // Set the duty cycle to 50/50 HIGH/LOW
+                     GCLK_GENCTRL_GENEN |         // Enable GCLK4
+                     GCLK_GENCTRL_SRC_DFLL48M |   // Set the 48MHz clock source
+                     GCLK_GENCTRL_ID(4);          // Select GCLK4
+  while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
+
+  // Feed GCLK4 to TC4 and TC5
+  REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable GCLK4 to TC4 and TC5
+                     GCLK_CLKCTRL_GEN_GCLK4 |     // Select GCLK4
+                     GCLK_CLKCTRL_ID_TC4_TC5;     // Feed the GCLK4 to TC4 and TC5
+  while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
+ 
+  REG_TC4_CTRLA |= TC_CTRLA_MODE_COUNT8;           // Set the counter to 8-bit mode
+  while (TC4->COUNT8.STATUS.bit.SYNCBUSY);        // Wait for synchronization
+
+  REG_TC4_COUNT8_CC0 = 0x55;                      // Set the TC4 CC0 register to some arbitary value
+  while (TC4->COUNT8.STATUS.bit.SYNCBUSY);        // Wait for synchronization
+  REG_TC4_COUNT8_CC1 = 0xAA;                      // Set the TC4 CC1 register to some arbitary value
+  while (TC4->COUNT8.STATUS.bit.SYNCBUSY);        // Wait for synchronization
+  REG_TC4_COUNT8_PER = 0xFF;                      // Set the PER (period) register to its maximum value
+  while (TC4->COUNT8.STATUS.bit.SYNCBUSY);        // Wait for synchronization
+
+  //NVIC_DisableIRQ(TC4_IRQn);
+  //NVIC_ClearPendingIRQ(TC4_IRQn);
+  NVIC_SetPriority(TC4_IRQn, 0);    // Set the Nested Vector Interrupt Controller (NVIC) priority for TC4 to 0 (highest)
+  NVIC_EnableIRQ(TC4_IRQn);         // Connect TC4 to Nested Vector Interrupt Controller (NVIC)
+
+  REG_TC4_INTFLAG |= TC_INTFLAG_MC1 | TC_INTFLAG_MC0 | TC_INTFLAG_OVF;        // Clear the interrupt flags
+  REG_TC4_INTENSET = TC_INTENSET_MC1 | TC_INTENSET_MC0 | TC_INTENSET_OVF;     // Enable TC4 interrupts
+  // REG_TC4_INTENCLR = TC_INTENCLR_MC1 | TC_INTENCLR_MC0 | TC_INTENCLR_OVF;     // Disable TC4 interrupts
+ 
+  REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV64 |     // Set prescaler to 64, 16MHz/64 = 256kHz
+                   TC_CTRLA_ENABLE;               // Enable TC4
+  while (TC4->COUNT8.STATUS.bit.SYNCBUSY);        // Wait for synchronization
+}
+
+
+void TC4_Handler()                              // Interrupt Service Routine (ISR) for timer TC4
+{     
+  // Check for overflow (OVF) interrupt
+  if (TC4->COUNT8.INTFLAG.bit.OVF && TC4->COUNT8.INTENSET.bit.OVF)             
+  {
+   	cnt++;
+	if (cnt < (bubble_power / 2)) digitalWrite(PIN_BUBBLES,HIGH);
+   	else digitalWrite(PIN_BUBBLES,LOW);
+   	if (cnt >= 127) cnt = 0;
+  }
+    REG_TC4_INTFLAG |= TC_INTFLAG_MC1 | TC_INTFLAG_MC0 | TC_INTFLAG_OVF;        // Clear the interrupt flags
+
+}
