@@ -52,7 +52,7 @@ float 							water_bath_temperature,
 								ambient_temperature;
 
 char							lighpad_power, uv_power, bubble_power;
-char							lighpad_target_power, uv_target_power, bubble_target_power;
+char							lighpad_target_power, uv_target_power;
 
 
 long 							last_user_input;		// millis() timestamp of last time button clicked
@@ -101,7 +101,7 @@ void setup() {
 
 	t.every(10, 	check_button);
 	t.every(2500, 	check_temperatures);
-	t.every(5000, 	check_bubbles);
+	t.every(30000, 	check_bubbles);
 	t.every(10, 	check_ramps);
 	t.every(50, 	update_display);
 	t.every(10000, 	safety_check);
@@ -116,9 +116,10 @@ void setup() {
 	
 	lighpad_target_power 	= LIGHTPAD_POWER;
 	uv_target_power			= 0;
-	bubble_target_power		= BUBBLE_SPEED_IDLE;
+	bubble_power		= BUBBLE_SPEED_IDLE;
 	
 	last_user_input = millis();
+	check_temperatures();			// do this once to be sure to get data
 	
 	if (LOG_TEMPERATURES) {
 		Serial.println("------");
@@ -424,7 +425,7 @@ void error (const char* err) {
 void safety_check() {
 	long time_since_last_click = millis() - last_user_input;
 	if (time_since_last_click > STANDBY_TIME * 60000) {
-		bubble_target_power = 0;
+		bubble_power = 0;
 		sound_standby();
 		u8g2.clearBuffer();
 		u8g2.setCursor(8,16);
@@ -533,12 +534,21 @@ void check_bubbles() {
 	long time_since_last_click = millis() - last_user_input;
 	static char sound_played;
 	if (time_since_last_click > BUBBLE_IDLE_TIMEOUT * 60000) {
-		bubble_target_power = BUBBLE_SPEED_IDLE;
+		bubble_power = BUBBLE_SPEED_IDLE;
 		if (!sound_played) sound_timeout();
 		sound_played = 1;
 	} else {
 		sound_played = 0;
 	}
+	
+	if (bubble_power == BUBBLE_SPEED_IDLE) {
+		analogWrite(PIN_BUBBLES, 255);
+			delay(200);
+		analogWrite(PIN_BUBBLES, 0);
+	} else {
+		analogWrite(PIN_BUBBLES, bubble_power);
+	}
+
 }
 
 //----------------------------------------------------------------------------------------
@@ -551,10 +561,6 @@ void check_ramps() {
 	if (uv_power < uv_target_power) uv_power++;
 	if (uv_power > uv_target_power) uv_power--;
 	analogWrite(PIN_UV, uv_power);
-
-	if (bubble_power < bubble_target_power) bubble_power++;
-	if (bubble_power > bubble_target_power) bubble_power--;
-	analogWrite(PIN_BUBBLES, bubble_power);
 }
 //----------------------------------------------------------------------------------------
 //																		uv flashing done
@@ -564,7 +570,7 @@ void stop_flash() {
 	uv_power = 0;						// full stop. do not ramp down
 	analogWrite(PIN_UV, uv_power);
 	delay(1000);
-	bubble_target_power =  BUBBLE_SPEED_NORMAL;
+	bubble_power =  BUBBLE_SPEED_NORMAL;
 	last_user_input = millis();
 }
 

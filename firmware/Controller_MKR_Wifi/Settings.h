@@ -25,7 +25,7 @@
 //																				Safety
 
 // time in minutes after which the machine shuts down if there wasn't any user input
-#define STANDBY_TIME		1
+#define STANDBY_TIME		120
 
 //----------------------------------------------------------------------------------------
 //																				Exposure
@@ -50,8 +50,8 @@
 // You should not set this to 0 in order to always keep water flowing around the heater
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
 #define BUBBLE_SPEED_IDLE					50
-#define BUBBLE_SPEED_NORMAL					140
-#define BUBBLE_IDLE_TIMEOUT					10
+#define BUBBLE_SPEED_NORMAL					200
+#define BUBBLE_IDLE_TIMEOUT					1
 
 //----------------------------------------------------------------------------------------
 //																				Water Bath
