@@ -22,6 +22,12 @@
 	#define SECRET_PASS "DO NOT PUT YOUR PASSWORD ON THE INTERNET"
 #endif
 //----------------------------------------------------------------------------------------
+//																				Safety
+
+// time in minutes after which the machine shuts down if there wasn't any user input
+#define STANDBY_TIME		1
+
+//----------------------------------------------------------------------------------------
 //																				Exposure
 //
 // UV_TIME	sets UV exposure time in seconds. Default is 90 
@@ -43,20 +49,20 @@
 // Idle Speed is when machine starts up, or no user input for BUBBLE_IDLE_TIMEOUT (in minutes)
 // You should not set this to 0 in order to always keep water flowing around the heater
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
-#define BUBBLE_SPEED_IDLE					80
+#define BUBBLE_SPEED_IDLE					50
 #define BUBBLE_SPEED_NORMAL					140
-#define BUBBLE_IDLE_TIMEOUT					20
+#define BUBBLE_IDLE_TIMEOUT					10
 
 //----------------------------------------------------------------------------------------
 //																				Water Bath
 //
 // If you use a water bath (secondary heater) for development set minimal and maximal 
-// temperatures here in degrees celsius. Recommended settings are 22 and 26 degrees.
+// temperatures here in degrees celsius. Recommended settings are 25 and 32 degrees.
 // Dallas temperature sensors all have a unique device address.
 // Copy the address for your sensor from the Arduino serial monitor and paste below
-#define WATER_BATH_MINIMUM_TEMPERATURE		28
+#define WATER_BATH_MINIMUM_TEMPERATURE		25
 #define WATER_BATH_MAXIMUM_TEMPERATURE		32
-#define WATER_BATH_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xAB, 0xE7, 0x45, 0x92, 0x11, 0x02, 0xA3}
+#define WATER_BATH_TEMPERATURE_SENSOR_ADDRESS	 {0x28, 0xAC, 0x56, 0x45, 0x92, 0x0F, 0x02, 0x94}
 
 
 //----------------------------------------------------------------------------------------
@@ -66,6 +72,9 @@
 //----------------------------------------------------------------------------------------
 //																				Logging
 //
+// Log Temperatures to Serial Monitor
+#define LOG_TEMPERATURES				true
+
 // Perform different hardware checks at startup? Set first one to true to disable all checks
 #define DISABLE_HARDWARE_CHECK			true
 

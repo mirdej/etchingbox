@@ -24,7 +24,7 @@
 
 
 //-------------------------------- Pins
-#define PIN_RELAY_HEAT 	4
+#define PIN_RELAY_HEAT 		4
 #define PIN_RELAY_HEAT_2 	5
 #define PIN_UV 				3
 #define	PIN_LIGHT			1
@@ -87,8 +87,8 @@ void setup() {
 	pinMode(PIN_SWITCH, 		INPUT_PULLUP);			
 
 	Serial.begin(9600);			
-	tone(PIN_PIEZO,800,100);
-	
+	sound_standby();
+		
 	// init OLED display
 	u8g2.begin();
 	u8g2.setPowerSave(0); 
@@ -98,14 +98,19 @@ void setup() {
 	temperature_sensors.begin();
 
 	// set up timed functions called by t.update() repeatedly in loop
-	t.every(20000,	check_wifi);
+
 	t.every(10, 	check_button);
 	t.every(2500, 	check_temperatures);
-	t.every(20000, 	check_bubbles);
+	t.every(5000, 	check_bubbles);
 	t.every(10, 	check_ramps);
 	t.every(50, 	update_display);
+	t.every(10000, 	safety_check);
 
+#ifdef __WIFI_ENABLED
 	check_wifi();
+	 t.every(20000,	check_wifi);
+#endif
+
 	intro();
 	hardware_test();
 	
@@ -114,12 +119,42 @@ void setup() {
 	bubble_target_power		= BUBBLE_SPEED_IDLE;
 	
 	last_user_input = millis();
+	
+	if (LOG_TEMPERATURES) {
+		Serial.println("------");
+		Serial.println("Temperature Log");
+		Serial.println("Time\tAmbient Temperature\tAcid Heater On\tAcid Temperature\tWater Heater On\tWater Temperature ");
+		log_temperatures();
+		t.every(30000, 	log_temperatures);
+	}
+
 }
 
 //========================================================================================
 //----------------------------------------------------------------------------------------
 //																				UTILITIES
-
+void log_temperatures() {
+	long time = millis()/1000;
+	if (time/60 < 10)		Serial.print("0");
+	Serial.print(time/60);
+	Serial.print(":");
+	time = time % 60;
+	if (time < 10) 		 Serial.print("0");
+	Serial.print(time);
+	Serial.print("\t");
+	Serial.print(ambient_temperature);
+	Serial.print("\t");
+	Serial.print(digitalRead(PIN_RELAY_HEAT));
+	Serial.print("\t");
+	Serial.print(acid_temperature);
+	Serial.print("\t");
+	Serial.print(digitalRead(PIN_RELAY_HEAT_2));
+	Serial.print("\t");
+	Serial.print(water_bath_temperature);
+	Serial.println();
+}
+//----------------------------------------------------------------------------------------
+//																			test hardware
 void hardware_test() {
 	if (DISABLE_HARDWARE_CHECK) return;
 	
@@ -285,12 +320,8 @@ void print_address(DeviceAddress deviceAddress) {
     u8g2.print(deviceAddress[i], HEX);
     Serial.print(deviceAddress[i], HEX);
     if (i < 7)     Serial.print(", ");
-	
-    
- 
   }
-  	Serial.println("}");
-
+  Serial.println("}");
 }
 
 //----------------------------------------------------------------------------------------
@@ -298,13 +329,22 @@ void print_address(DeviceAddress deviceAddress) {
 void all_on() {
 	digitalWrite(LED_BUILTIN, 			HIGH);			
 	digitalWrite(PIN_RELAY_HEAT, 		HIGH);			
-	digitalWrite(PIN_RELAY_HEAT_2, 	HIGH);			
-	digitalWrite(PIN_UV, 				HIGH);			
-	digitalWrite(PIN_LIGHT, 			HIGH);			
-	digitalWrite(PIN_BUBBLES,	 		HIGH);			
+	digitalWrite(PIN_RELAY_HEAT_2, 		HIGH);			
+	analogWrite(PIN_UV, 				255);			
+	analogWrite(PIN_LIGHT, 				255);			
+	analogWrite(PIN_BUBBLES,	 		255);			
 
 }
 
+void all_off() {
+	digitalWrite(LED_BUILTIN, 			LOW);			
+	digitalWrite(PIN_RELAY_HEAT, 		LOW);			
+	digitalWrite(PIN_RELAY_HEAT_2, 		LOW);			
+	analogWrite(PIN_UV, 				0);			
+	analogWrite(PIN_LIGHT, 				0);			
+	analogWrite(PIN_BUBBLES,	 		0);			
+
+}
 //----------------------------------------------------------------------------------------
 //																	Nice and warm Welcome
 void intro() {
@@ -322,7 +362,8 @@ void intro() {
 }
 
 
-
+//----------------------------------------------------------------------------------------
+//																			   Wifi Status
 void printWifiStatus() {
 	// print the SSID of the network you're attached to:
 	Serial.print("SSID: ");
@@ -378,8 +419,39 @@ void error (const char* err) {
 //----------------------------------------------------------------------------------------
 //																		TIMER FUNCTIONS
 
+//----------------------------------------------------------------------------------------
+//											 						 		Safety check
+void safety_check() {
+	long time_since_last_click = millis() - last_user_input;
+	if (time_since_last_click > STANDBY_TIME * 60000) {
+		bubble_target_power = 0;
+		sound_standby();
+		u8g2.clearBuffer();
+		u8g2.setCursor(8,16);
+		u8g2.setFont(u8g2_font_logisoso16_tr);
+		u8g2.print("Standby");
+		u8g2.sendBuffer();
+		
+		all_off();
+		all_off();	
+		
+		char state = digitalRead(PIN_SWITCH);			// stay in loop until button is clicked
+		char old_state = state;
+		while (state == old_state) {
+			state = digitalRead(PIN_SWITCH);
+			delay(500);
+		}
+		last_user_input = millis();
+		sound_welcome();
+		intro();
+	}
+
+}
+
+//----------------------------------------------------------------------------------------
+//											 						Display error message
 void check_wifi() {
-Serial.println("Wifi?");
+	Serial.println("Wifi?");
 	Serial.println(ssid);
 	return;
 		#ifdef __WIFI_ENABLED
@@ -417,13 +489,13 @@ void check_button() {
 	old_state = state;
 	if (state) return;
 	
-	tone(PIN_PIEZO,880,100);
 	last_user_input = millis();
 	
 	if (uv_state) {
-		uv_state = 0;
-		uv_target_power = 0;
+		sound_cancel_flash();
+		stop_flash();
 	} else {
+		sound_start_flash();
 		uv_state = 1;
 		uv_target_power = UV_POWER;
 		uv_stop_time = millis() + ((unsigned long)UV_TIME * (unsigned long)1000);
@@ -439,7 +511,6 @@ void check_temperatures() {
 	ambient_temperature		= temperature_sensors.getTempC(ambient_temperature_sensor_address);
 	
 	if (acid_temperature > -50.) {
-		Serial.println(acid_temperature);
 		if (acid_temperature < ACID_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,HIGH);
 		if (acid_temperature > ACID_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT,LOW);
 	} else {
@@ -448,7 +519,6 @@ void check_temperatures() {
 	}
 
 	if (water_bath_temperature > -50.) {
-		Serial.println(water_bath_temperature);
 		if (water_bath_temperature < WATER_BATH_MINIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,HIGH);
 		if (water_bath_temperature > WATER_BATH_MAXIMUM_TEMPERATURE) digitalWrite(PIN_RELAY_HEAT_2,LOW);
 	} else {
@@ -461,8 +531,13 @@ void check_temperatures() {
 //																				temperature
 void check_bubbles() {	
 	long time_since_last_click = millis() - last_user_input;
+	static char sound_played;
 	if (time_since_last_click > BUBBLE_IDLE_TIMEOUT * 60000) {
 		bubble_target_power = BUBBLE_SPEED_IDLE;
+		if (!sound_played) sound_timeout();
+		sound_played = 1;
+	} else {
+		sound_played = 0;
 	}
 }
 
@@ -488,12 +563,6 @@ void stop_flash() {
 	uv_target_power = 0;
 	uv_power = 0;						// full stop. do not ramp down
 	analogWrite(PIN_UV, uv_power);
-	tone(PIN_PIEZO,690,100);				
-	delay(200);
-	tone(PIN_PIEZO,690,100);
-	delay(100);
-	tone(PIN_PIEZO,880,400);
-	
 	delay(1000);
 	bubble_target_power =  BUBBLE_SPEED_NORMAL;
 	last_user_input = millis();
@@ -513,6 +582,49 @@ void print_time(long time) {
 		if (time < 10) 		 u8g2.print("0");
 		u8g2.print(time);
 	}
+//----------------------------------------------------------------------------------------
+//																				sounds
+//----------------------------------------------------------------------------------------
+void sound_start_flash() {
+	tone(PIN_PIEZO,880,100);
+}
+
+void sound_end_flash() {
+	tone(PIN_PIEZO,659,100);				
+	delay(200);
+	tone(PIN_PIEZO,659,100);
+	delay(100);
+	tone(PIN_PIEZO,880,400);
+}
+
+void sound_cancel_flash() {
+	tone(PIN_PIEZO,880,100);				
+	delay(200);
+	tone(PIN_PIEZO,659,100);
+
+}
+
+void sound_welcome() {
+	tone(PIN_PIEZO,800,100);
+}
+
+void sound_timeout() {
+	tone(PIN_PIEZO,261,200);				
+	delay(100);	
+	tone(PIN_PIEZO,233,200);				
+	delay(100);	
+	tone(PIN_PIEZO,220,200);				
+	delay(100);	
+	tone(PIN_PIEZO,195,200);				
+	delay(100);	
+	tone(PIN_PIEZO,174,800);				
+}
+
+void sound_standby() {
+	tone(PIN_PIEZO,880,100);				
+	delay(200);
+	tone(PIN_PIEZO,659,100);
+}
 //----------------------------------------------------------------------------------------
 //																				display
 //----------------------------------------------------------------------------------------
@@ -544,7 +656,8 @@ void update_display() {
 		time = uv_stop_time - millis();
 	
 		if (time < 500) {
-				stop_flash();
+			stop_flash();
+			sound_end_flash();
 		}
 		
 		print_time(time);
