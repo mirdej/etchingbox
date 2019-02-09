@@ -25,7 +25,15 @@
 //																				Safety
 
 // time in minutes after which the machine shuts down if there wasn't any user input
-#define STANDBY_TIME		120
+#define STANDBY_TIME							45
+
+// When heating starts, wait for a specific time (in minutes) before checking if 
+// temperature is actually rising for at least a certain amount of degrees.
+#define ACID_TEMPERATURE_CHECK_WAIT		3
+#define ACID_TEMPERATURE_CHECK_RISE		2
+
+#define WATER_BATH_TEMPERATURE_CHECK_WAIT		6
+#define WATER_BATH_TEMPERATURE_CHECK_RISE		1
 
 //----------------------------------------------------------------------------------------
 //																				Exposure
@@ -51,7 +59,7 @@
 // Normal speed starts after UV exposure finishes and lasts for BUBBLE_IDLE_TIMEOUT minutes
 #define BUBBLE_SPEED_IDLE					40
 #define BUBBLE_SPEED_NORMAL					200
-#define BUBBLE_IDLE_TIMEOUT					1
+#define BUBBLE_IDLE_TIMEOUT					30
 
 //----------------------------------------------------------------------------------------
 //																				Water Bath
