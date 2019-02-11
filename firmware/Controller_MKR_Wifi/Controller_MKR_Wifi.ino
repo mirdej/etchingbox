@@ -298,7 +298,7 @@ void printWifiStatus() {
 void safety_check() {
 	long time_since_last_click = millis() - last_user_input;
 	
-	if (acid_heat_start_time) {
+	if (acid_heat_start_time && (acid_temperature < ACID_MINIMUM_TEMPERATURE)) {
 		if ((millis() - acid_heat_start_time) > ACID_TEMPERATURE_CHECK_WAIT * 60000) {
 			if ((acid_temperature - acid_heat_start_temperature) > ACID_TEMPERATURE_CHECK_RISE) {
 				// passed check. don't check again until next heating period
@@ -311,7 +311,7 @@ void safety_check() {
 		}
 	}
 
-	if (water_bath_heat_start_time) {
+	if (water_bath_heat_start_time && (water_bath_temperature < WATER_BATH_MINIMUM_TEMPERATURE)) {
 		if ((millis() - water_bath_heat_start_time) > WATER_BATH_TEMPERATURE_CHECK_WAIT * 60000) {
 			if ((water_bath_temperature - water_bath_heat_start_temperature) > WATER_BATH_TEMPERATURE_CHECK_RISE) {
 				// passed check. don't check again until next heating period
