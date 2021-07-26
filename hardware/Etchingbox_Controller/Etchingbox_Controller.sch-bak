@@ -1662,4 +1662,15 @@ F 3 "" H 9200 6400 50  0001 C CNN
 	1    9200 6400
 	1    0    0    -1  
 $EndComp
+$Comp
+L Anyma_Library:LOGO U7
+U 1 1 6127CB66
+P 8500 6400
+F 0 "U7" H 8578 6521 50  0000 L CNN
+F 1 "LOGO" H 8578 6430 50  0000 L CNN
+F 2 "anyma_footprints:logo_aetz_box" H 8500 6400 50  0001 C CNN
+F 3 "" H 8500 6400 50  0001 C CNN
+	1    8500 6400
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
