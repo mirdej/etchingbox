@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Users/me/Library/Arduino15/packages/esp32/tools/**",
+                "/Users/me/Library/Arduino15/packages/esp32/hardware/esp32/1.0.2/**",
+                "/Users/me/Library/Arduino15/packages/arduino/tools/**",
+                "/Users/me/Library/Arduino15/packages/arduino/hardware/samd/1.6.19/**"
+            ],
+            "forcedInclude": [],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
