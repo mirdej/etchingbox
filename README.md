@@ -1,6 +1,6 @@
-#README for Etchingbox project#
+# README for Etchingbox project
 
-##The Idea##
+## The Idea 
 Build a portable / mobile PCB etching workstation that fulfills these criteria
 * waterproof
 * able to etch 100x160mm double sided boards with 8mil precision
@@ -16,5 +16,5 @@ Some guiding ideas
 * as few as possible switches and electrical contacts exposed to the harsh etching environment
 * self illuminating
 
-##More Info##
-http://wiki.sgmk-ssam.ch/index.php/EtchingBox
+## More Info
+https://wiki.sgmk-ssam.ch/index.php/EtchingBox
