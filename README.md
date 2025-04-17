@@ -1,4 +1,6 @@
-![Cuvette and Insoleuse](Docs/Pictures/sketchy2.png)
+![Cuvette and Insoleuse](Docs/Pictures/sketchy2dark.png#gh-dark-mode-only)
+![Cuvette and Insoleuse](Docs/Pictures/sketchy2.png#gh-light-mode-only)
+
 # AETZBOX
 ### DIY Mobile PCB Etching KIT
 
