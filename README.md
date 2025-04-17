@@ -1,4 +1,9 @@
-# README for Etchingbox project
+![Cuvette and Insoleuse](Docs/Pictures/sketchy2.png)
+# AETZBOX
+### DIY Mobile PCB Etching KIT
+
+
+
 
 ## The Idea 
 Build a portable / mobile PCB etching workstation that fulfills these criteria
