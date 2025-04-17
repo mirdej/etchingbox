@@ -968,7 +968,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 375.158 64.7121 0)
 			(effects
 				(font
@@ -1878,7 +1878,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 265.938 64.7121 0)
 			(effects
 				(font
@@ -2234,7 +2234,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 100.838 63.4421 0)
 			(effects
 				(font
@@ -3315,7 +3315,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 51.308 63.4421 0)
 			(effects
 				(font
@@ -3671,7 +3671,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 27.178 63.4421 0)
 			(effects
 				(font
@@ -4185,7 +4185,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 315.468 64.7121 0)
 			(effects
 				(font
@@ -4488,7 +4488,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 411.988 64.7121 0)
 			(effects
 				(font
@@ -4804,7 +4804,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 199.898 64.7121 0)
 			(effects
 				(font
@@ -4883,7 +4883,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 277.368 64.7121 0)
 			(effects
 				(font
@@ -4962,7 +4962,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 253.238 64.7121 0)
 			(effects
 				(font
@@ -5120,7 +5120,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 174.498 64.7121 0)
 			(effects
 				(font
@@ -5331,7 +5331,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 224.028 64.7121 0)
 			(effects
 				(font
@@ -5489,7 +5489,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 187.198 64.7121 0)
 			(effects
 				(font
@@ -5647,7 +5647,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 211.328 64.7121 0)
 			(effects
 				(font
@@ -6319,7 +6319,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 339.598 64.7121 0)
 			(effects
 				(font
@@ -6609,7 +6609,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 39.878 63.4421 0)
 			(effects
 				(font
@@ -7268,7 +7268,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 76.708 63.4421 0)
 			(effects
 				(font
@@ -9383,7 +9383,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 399.288 64.7121 0)
 			(effects
 				(font
@@ -9607,7 +9607,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 302.768 64.7121 0)
 			(effects
 				(font
@@ -10516,7 +10516,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 161.798 64.7121 0)
 			(effects
 				(font
@@ -10898,7 +10898,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 290.068 64.7121 0)
 			(effects
 				(font
@@ -11399,7 +11399,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 326.898 64.7121 0)
 			(effects
 				(font
@@ -12750,7 +12750,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 137.668 64.7121 0)
 			(effects
 				(font
@@ -13132,7 +13132,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 64.008 63.4421 0)
 			(effects
 				(font
@@ -13211,7 +13211,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 89.408 63.4421 0)
 			(effects
 				(font
@@ -13567,7 +13567,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 113.538 63.4421 0)
 			(effects
 				(font
@@ -13646,7 +13646,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 150.368 64.7121 0)
 			(effects
 				(font
@@ -14160,7 +14160,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R300/0.125W"
+		(property "Value" "R51/0.125W"
 			(at 387.858 64.7121 0)
 			(effects
 				(font
