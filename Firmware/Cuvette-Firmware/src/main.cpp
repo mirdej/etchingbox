@@ -149,6 +149,7 @@ int get_water_level()
       }
     }
   }
+  return 2;
   return waterlevel;
 }
 
@@ -344,6 +345,7 @@ void update_display(void * = NULL)
 
 void cuvette_task(void *)
 {
+  
   Telnet.printf("Start Cuvette Task on core %d", xPortGetCoreID());
 
   pinMode(PIN_PWM_HEAT, OUTPUT);
@@ -353,7 +355,7 @@ void cuvette_task(void *)
   digitalWrite(PIN_PWM_BUBBLES, HIGH);
   delay(200);
   digitalWrite(PIN_PWM_HEAT, LOW);
-  digitalWrite(PIN_PWM_BUBBLES, LOW);
+  //digitalWrite(PIN_PWM_BUBBLES, LOW);
 
   while (1)
   {
@@ -402,11 +404,13 @@ void cuvette_task(void *)
     if (strlen(message))
     {
       digitalWrite(PIN_PWM_HEAT, LOW);
-      digitalWrite(PIN_PWM_BUBBLES, LOW);
+      //digitalWrite(PIN_PWM_BUBBLES, LOW);
       fill_solid(pixel, NUM_PIXELS, CRGB::OrangeRed);
     }
     else
     {
+            //digitalWrite(PIN_PWM_BUBBLES, HIGH);
+
       fill_solid(pixel, NUM_PIXELS, CRGB::FloralWhite);
 
       if (temperature_water < temperature_water_target)
@@ -421,7 +425,7 @@ void cuvette_task(void *)
 
     update_display();
     FastLED.show();
-    vTaskDelay(pdMS_TO_TICKS(500));
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
