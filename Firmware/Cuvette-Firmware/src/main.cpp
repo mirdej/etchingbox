@@ -17,8 +17,6 @@ Cuvette
 #include <OTA.h>
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 
-
-
 //----------------------------------------------------------------------------------------
 //                                                                                  CONFIG
 #define HW_VERSION 3
@@ -188,8 +186,9 @@ void intro()
 
 void wifi_task(void *)
 {
-
+  WiFi.setHostname(DEVICE_NAME);
   Telnet.printf("Start WIFI Task on core %d", xPortGetCoreID());
+
 
   // Wifi Manager: Try to connect, create access point on failure
   WiFiManager wm;
@@ -315,7 +314,6 @@ void display_wifi()
   u8g2.setCursor(0, 48);
 
   u8g2.printf("%s\n", FIRMWARE_VERSION);
-  
 }
 
 //----------------------------------------------------------------------------------------
@@ -345,7 +343,8 @@ void update_display(void * = NULL)
 
 void cuvette_task(void *)
 {
-  
+  int temp_error_count;
+
   Telnet.printf("Start Cuvette Task on core %d", xPortGetCoreID());
 
   pinMode(PIN_PWM_HEAT, OUTPUT);
@@ -355,7 +354,7 @@ void cuvette_task(void *)
   digitalWrite(PIN_PWM_BUBBLES, HIGH);
   delay(200);
   digitalWrite(PIN_PWM_HEAT, LOW);
-  //digitalWrite(PIN_PWM_BUBBLES, LOW);
+  // digitalWrite(PIN_PWM_BUBBLES, LOW);
 
   while (1)
   {
@@ -364,6 +363,7 @@ void cuvette_task(void *)
     float tempC = sensors.getTempCByIndex(0);
     if (tempC != DEVICE_DISCONNECTED_C)
     {
+      temp_error_count = 0;
       temperature_water = tempC;
       if (temperature_water < 5.)
       {
@@ -377,8 +377,12 @@ void cuvette_task(void *)
     }
     else
     {
-      sprintf(message, "Temp Sens Error");
-      Telnet.println("Error: Could not read temperature data");
+      temp_error_count++;
+      if (temp_error_count > 6)
+      {
+        sprintf(message, "Temp Sens Error");
+        Telnet.println("Error: Could not read temperature data");
+      }
     }
 
     // check water level
@@ -404,12 +408,12 @@ void cuvette_task(void *)
     if (strlen(message))
     {
       digitalWrite(PIN_PWM_HEAT, LOW);
-      //digitalWrite(PIN_PWM_BUBBLES, LOW);
+      // digitalWrite(PIN_PWM_BUBBLES, LOW);
       fill_solid(pixel, NUM_PIXELS, CRGB::OrangeRed);
     }
     else
     {
-            //digitalWrite(PIN_PWM_BUBBLES, HIGH);
+      // digitalWrite(PIN_PWM_BUBBLES, HIGH);
 
       fill_solid(pixel, NUM_PIXELS, CRGB::FloralWhite);
 
