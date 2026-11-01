@@ -2,7 +2,9 @@
 
 Part of the **[AETZBOX DIY Mobile PCB Etching KIT](https://wiki.sgmk-ssam.ch/index.php/EtchingBox)** by SGMK (Swiss Mechatronic Art Society).
 
-![3D Assembly Preview](OpenSCAD-3D-Assembly.png)
+| Finished Plywood Enclosure | Dual UV-LED Exposure Active |
+| :---: | :---: |
+| ![Finished Enclosure](images/finished_case.jpg) | ![Dual UV Exposure](images/finished_case_UV.jpg) |
 
 A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illuminator.scad) to hold two facing UV-LED matrix boards for simultaneous double-sided exposure of photo-resist PCBs ($100 \times 160\text{ mm}$ Eurocard format).
 
@@ -11,7 +13,7 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 ## 💡 Overview & Key Features
 
 * **Simultaneous Double-Sided Exposure**: Holds two identical UV-LED boards facing each other ($180 \times 120\text{ mm}$, 84 UV LEDs each) at a fixed $74\text{ mm}$ spacing ($\approx 31.4\text{ mm}$ optical distance to the centered target PCB).
-* **Direct Screw Mounting (No Spacers)**: Both PCBs screw directly flat onto the inside face of the Top and Bottom plywood plates using their 8 semicircular edge notches ($2.5\text{ mm}$ pilot holes for M2.5/M3 wood screws).
+* **Direct Screw Mounting (No Spacers)**: Both PCBs screw directly flat onto the inside face of the Top and Bottom plywood plates using their 8 semicircular edge notches ($2.0\text{ mm}$ pilot holes for M2.5/M3 wood screws).
 * **Top Cover UI Cutouts**: Calibrated cutouts for the Top PCB's backside $0.96''$ I2C OLED display window ($28.5 \times 29\text{ mm}$) and 4 tactile pushbuttons ($9 \times 12\text{ mm}$).
 * **Plexi Carrier Plates**: Uses two existing clear acrylic carrier plates ($180 \times 120 \times 4.8\text{ mm}$, $R \approx 4\text{ mm}$ corners) sliding in from the **shorter ($120\text{ mm}$) side**.
 * **2-Piece Short Entry Wall**: Split into separate Lower and Upper pieces to eliminate fragile bridges:
@@ -25,9 +27,13 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ---
 
-## 📐 Exploded Assembly & Internal Mechanics
+## 📐 3D CAD Views & Internal Mechanics
 
-![3D Exploded View](OpenSCAD-3D-Exploded.png)
+| 3D Isometric Assembly | Front Entry Slot & Finger Opening |
+| :---: | :---: |
+| ![3D Assembly Preview](images/OpenSCAD-3D-Assembly.png) | ![Front Entry Slot](images/OpenSCAD-3D-FrontEntry.png) |
+
+![3D Exploded View](images/OpenSCAD-3D-Exploded.png)
 
 ### Sandwich Travel & Flexure Mechanics
 
@@ -52,12 +58,14 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 * **[`UV-Illuminator.json`](UV-Illuminator.json)**: OpenSCAD Customizer presets (including default `test1_4.7`).
 * **[`UV-Illuminator-4mm-Enclosure.svg`](UV-Illuminator-4mm-Enclosure.svg)**: 2D vector laser cut sheet for $4.6\text{ mm}$ plywood.
 * **[`UV-Illuminator-4mm-Enclosure.dxf`](UV-Illuminator-4mm-Enclosure.dxf)**: 2D CAD/CAM DXF export for laser cutters.
-* **[`OpenSCAD-3D-Assembly.png`](OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
-* **[`OpenSCAD-3D-FrontEntry.png`](OpenSCAD-3D-FrontEntry.png)**: 3D close-up view of the front entry slot and finger grip.
-* **[`OpenSCAD-3D-Exploded.png`](OpenSCAD-3D-Exploded.png)**: 3D exploded view diagram.
-* **[`Spring-Clearance-Detail.png`](Spring-Clearance-Detail.png)**: Close-up diagram of the $6.0\text{ mm}$ spring tip expansion gap.
-* **[`Spring-Flexure-Analysis.png`](Spring-Flexure-Analysis.png)**: Finite beam mechanics and stress analysis.
-* **[`UV-Illuminator-Preview.png`](UV-Illuminator-Preview.png)**: Dimensioned technical layout overview.
+* **[`images/finished_case.jpg`](images/finished_case.jpg)**: Photo of the assembled laser-cut plywood enclosure.
+* **[`images/finished_case_UV.jpg`](images/finished_case_UV.jpg)**: Photo of the illuminator operating with both UV LED arrays active.
+* **[`images/OpenSCAD-3D-Assembly.png`](images/OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
+* **[`images/OpenSCAD-3D-FrontEntry.png`](images/OpenSCAD-3D-FrontEntry.png)**: 3D close-up view of the front entry slot and finger grip.
+* **[`images/OpenSCAD-3D-Exploded.png`](images/OpenSCAD-3D-Exploded.png)**: 3D exploded view diagram.
+* **[`images/Spring-Clearance-Detail.png`](images/Spring-Clearance-Detail.png)**: Close-up diagram of the $6.0\text{ mm}$ spring tip expansion gap.
+* **[`images/Spring-Flexure-Analysis.png`](images/Spring-Flexure-Analysis.png)**: Finite beam mechanics and stress analysis.
+* **[`images/UV-Illuminator-Preview.png`](images/UV-Illuminator-Preview.png)**: Dimensioned technical layout overview.
 
 ---
 
@@ -92,16 +100,15 @@ openscad -D 'render_mode="2d_cut_sheet"' -o UV-Illuminator.svg UV-Illuminator.sc
 openscad -D 'render_mode="2d_cut_sheet"' -o UV-Illuminator.dxf UV-Illuminator.scad
 
 # Render 3D assembly preview image:
-openscad -D 'render_mode="3d_assembly"' --imgsize=1920,1080 -o assembly.png UV-Illuminator.scad
+openscad -D 'render_mode="3d_assembly"' --imgsize=1920,1080 -o images/assembly.png UV-Illuminator.scad
 ```
 
 ---
 
 <div align="center">
 
-[![Bruce Lee Showdown](c64_bruce_showdown.gif)](https://dusseiller.ch/)
+[![Bruce Lee Showdown](images/c64_bruce_showdown.gif)](https://dusseiller.ch/)
 
 *Bruce Lee rules · Open source hardware — hack, remix, share.*
 
 </div>
-
