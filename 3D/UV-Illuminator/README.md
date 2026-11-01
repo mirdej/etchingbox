@@ -52,7 +52,8 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 * **[`UV-Illuminator.json`](UV-Illuminator.json)**: OpenSCAD Customizer presets (including default `test1_4.7`).
 * **[`UV-Illuminator-4mm-Enclosure.svg`](UV-Illuminator-4mm-Enclosure.svg)**: 2D vector laser cut sheet for $4.6\text{ mm}$ plywood.
 * **[`UV-Illuminator-4mm-Enclosure.dxf`](UV-Illuminator-4mm-Enclosure.dxf)**: 2D CAD/CAM DXF export for laser cutters.
-* **[`OpenSCAD-3D-Assembly.png`](OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator.
+* **[`OpenSCAD-3D-Assembly.png`](OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
+* **[`OpenSCAD-3D-FrontEntry.png`](OpenSCAD-3D-FrontEntry.png)**: 3D close-up view of the front entry slot and finger grip.
 * **[`OpenSCAD-3D-Exploded.png`](OpenSCAD-3D-Exploded.png)**: 3D exploded view diagram.
 * **[`Spring-Clearance-Detail.png`](Spring-Clearance-Detail.png)**: Close-up diagram of the $6.0\text{ mm}$ spring tip expansion gap.
 * **[`Spring-Flexure-Analysis.png`](Spring-Flexure-Analysis.png)**: Finite beam mechanics and stress analysis.
