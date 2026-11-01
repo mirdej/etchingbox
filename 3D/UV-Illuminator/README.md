@@ -37,9 +37,7 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ### Sandwich Travel & Spring Flexure Mechanics
 
-| Spring Flexure & Stress Mechanics | Spring Tip Expansion Gap Detail |
-| :---: | :---: |
-| ![Spring Flexure Mechanics](images/Spring-Flexure-Analysis.png) | ![Spring Tip Clearance Detail](images/Spring-Clearance-Detail.png) |
+![Spring Flexure Mechanics & 6.0 mm Tip Clearance Gap](images/Spring-Flexure-Analysis.png)
 
 | Component | Dimensions / Values | Notes |
 | :--- | :--- | :--- |
@@ -69,12 +67,9 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ### Images & Documentation Assets (`images/`)
 * **[`images/finished_case.jpg`](images/finished_case.jpg)**: Photo of the assembled laser-cut plywood enclosure.
-* **[`images/finished_case_UV.jpg`](images/finished_case_UV.jpg)**: Photo of the illuminator operating with both UV LED arrays active.
 * **[`images/OpenSCAD-3D-Assembly.png`](images/OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
-* **[`images/OpenSCAD-3D-Exploded.png`](images/OpenSCAD-3D-Exploded.png)**: 3D exploded view diagram.
-* **[`images/Spring-Clearance-Detail.png`](images/Spring-Clearance-Detail.png)**: Close-up diagram of the $6.0\text{ mm}$ spring tip expansion gap.
-* **[`images/Spring-Flexure-Analysis.png`](images/Spring-Flexure-Analysis.png)**: Finite beam mechanics and stress analysis.
-* **[`images/UV-Illuminator-Preview.png`](images/UV-Illuminator-Preview.png)**: Dimensioned technical layout overview.
+* **[`images/Spring-Flexure-Analysis.png`](images/Spring-Flexure-Analysis.png)**: Finite beam mechanics, deflection, and $6.0\text{ mm}$ clearance gap analysis.
+* and more...
 
 ---
 
