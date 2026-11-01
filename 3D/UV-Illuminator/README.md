@@ -54,10 +54,16 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ## 📁 Repository Files
 
+### CAD Source & Configuration
 * **[`UV-Illuminator.scad`](UV-Illuminator.scad)**: Complete parametric OpenSCAD model (Source of Truth).
 * **[`UV-Illuminator.json`](UV-Illuminator.json)**: OpenSCAD Customizer presets (including default `test1_4.7`).
-* **[`UV-Illuminator-4mm-Enclosure.svg`](UV-Illuminator-4mm-Enclosure.svg)**: 2D vector laser cut sheet for $4.6\text{ mm}$ plywood.
-* **[`UV-Illuminator-4mm-Enclosure.dxf`](UV-Illuminator-4mm-Enclosure.dxf)**: 2D CAD/CAM DXF export for laser cutters.
+
+### Exported Laser Cut Sheets (`laser_files/`)
+* **[`laser_files/UV-Illuminator-4mm-Enclosure.svg`](laser_files/UV-Illuminator-4mm-Enclosure.svg)**: 2D vector laser cut sheet for $4.6\text{ mm}$ plywood.
+* **[`laser_files/UV-Illuminator-4mm-Enclosure.dxf`](laser_files/UV-Illuminator-4mm-Enclosure.dxf)**: 2D CAD/CAM DXF export for laser cutters.
+* **[`laser_files/UV-Illuminator_4mm6.svg`](laser_files/UV-Illuminator_4mm6.svg)**: Alternative $4.6\text{ mm}$ laser cut sheet layout.
+
+### Images & Documentation Assets (`images/`)
 * **[`images/finished_case.jpg`](images/finished_case.jpg)**: Photo of the assembled laser-cut plywood enclosure.
 * **[`images/finished_case_UV.jpg`](images/finished_case_UV.jpg)**: Photo of the illuminator operating with both UV LED arrays active.
 * **[`images/OpenSCAD-3D-Assembly.png`](images/OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
@@ -94,13 +100,13 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 ### From the Command Line:
 ```bash
 # Export laser cut SVG sheet:
-openscad -D 'render_mode="2d_cut_sheet"' -o UV-Illuminator.svg UV-Illuminator.scad
+openscad -D 'render_mode="2d_cut_sheet"' -o laser_files/UV-Illuminator-4mm-Enclosure.svg UV-Illuminator.scad
 
 # Export CAD/CAM DXF sheet:
-openscad -D 'render_mode="2d_cut_sheet"' -o UV-Illuminator.dxf UV-Illuminator.scad
+openscad -D 'render_mode="2d_cut_sheet"' -o laser_files/UV-Illuminator-4mm-Enclosure.dxf UV-Illuminator.scad
 
 # Render 3D assembly preview image:
-openscad -D 'render_mode="3d_assembly"' --imgsize=1920,1080 -o images/assembly.png UV-Illuminator.scad
+openscad -D 'render_mode="3d_assembly"' --imgsize=1920,1080 -o images/OpenSCAD-3D-Assembly.png UV-Illuminator.scad
 ```
 
 ---
