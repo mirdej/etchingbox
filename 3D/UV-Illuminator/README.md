@@ -31,11 +31,9 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ![Technical Layout & Dimensions](images/UV-Illuminator-Preview.png)
 
-| 3D Isometric Assembly | Front Entry Slot & Finger Opening |
+| 3D Assembled Enclosure | 3D Exploded View |
 | :---: | :---: |
-| ![3D Assembly Preview](images/OpenSCAD-3D-Assembly.png) | ![Front Entry Slot](images/OpenSCAD-3D-FrontEntry.png) |
-
-![3D Exploded View](images/OpenSCAD-3D-Exploded.png)
+| ![3D Assembly Preview](images/OpenSCAD-3D-Assembly.png) | ![3D Exploded View](images/OpenSCAD-3D-Exploded.png) |
 
 ### Sandwich Travel & Spring Flexure Mechanics
 
@@ -73,7 +71,6 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 * **[`images/finished_case.jpg`](images/finished_case.jpg)**: Photo of the assembled laser-cut plywood enclosure.
 * **[`images/finished_case_UV.jpg`](images/finished_case_UV.jpg)**: Photo of the illuminator operating with both UV LED arrays active.
 * **[`images/OpenSCAD-3D-Assembly.png`](images/OpenSCAD-3D-Assembly.png)**: 3D render of the assembled illuminator (front isometric view).
-* **[`images/OpenSCAD-3D-FrontEntry.png`](images/OpenSCAD-3D-FrontEntry.png)**: 3D close-up view of the front entry slot and finger grip.
 * **[`images/OpenSCAD-3D-Exploded.png`](images/OpenSCAD-3D-Exploded.png)**: 3D exploded view diagram.
 * **[`images/Spring-Clearance-Detail.png`](images/Spring-Clearance-Detail.png)**: Close-up diagram of the $6.0\text{ mm}$ spring tip expansion gap.
 * **[`images/Spring-Flexure-Analysis.png`](images/Spring-Flexure-Analysis.png)**: Finite beam mechanics and stress analysis.
