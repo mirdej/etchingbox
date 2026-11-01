@@ -27,7 +27,9 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ---
 
-## 📐 3D CAD Views & Internal Mechanics
+## 📐 3D CAD Views & Technical Previews
+
+![Technical Layout & Dimensions](images/UV-Illuminator-Preview.png)
 
 | 3D Isometric Assembly | Front Entry Slot & Finger Opening |
 | :---: | :---: |
@@ -35,7 +37,11 @@ A fully parametric, laser-cut plywood enclosure designed in [OpenSCAD](UV-Illumi
 
 ![3D Exploded View](images/OpenSCAD-3D-Exploded.png)
 
-### Sandwich Travel & Flexure Mechanics
+### Sandwich Travel & Spring Flexure Mechanics
+
+| Spring Flexure & Stress Mechanics | Spring Tip Expansion Gap Detail |
+| :---: | :---: |
+| ![Spring Flexure Mechanics](images/Spring-Flexure-Analysis.png) | ![Spring Tip Clearance Detail](images/Spring-Clearance-Detail.png) |
 
 | Component | Dimensions / Values | Notes |
 | :--- | :--- | :--- |
